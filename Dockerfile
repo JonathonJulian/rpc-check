@@ -15,7 +15,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o rpc-check .
 
 # Start a new stage from scratch for the running container
 FROM alpine:latest  
-
+LABEL org.opencontainers.image.source=https://github.com/JonathonJulian/rpc-check/
 # Install ca-certificates in case you make external HTTPS requests
 RUN apk --no-cache add ca-certificates
 
