@@ -23,7 +23,7 @@ jobs:
       contents: read
     steps:
       - name: Convert repository owner to lowercase
-        run: echo "DOCKER_IMAGE_NAME_LOWER=ghcr.io/$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')/reth" >> $GITHUB_ENV
+        run: echo "DOCKER_IMAGE_NAME_LOWER=ghcr.io/$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')/rpc-check" >> $GITHUB_ENV
       - uses: actions/checkout@v4
       - name: Log in to Docker
         run: |
