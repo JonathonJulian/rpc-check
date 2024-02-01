@@ -61,7 +61,7 @@ func main() {
 
 	metricsURL := fmt.Sprintf("http://%s:%s/metrics", metricsHostname, metricsPort)
 
-	http.HandleFunc("/rpc-check", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/rpc-health", func(w http.ResponseWriter, r *http.Request) {
 		status := checkMetric(metricsURL)
 		w.WriteHeader(status)
 	})
