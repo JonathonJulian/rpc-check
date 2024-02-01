@@ -8,10 +8,10 @@ on:
       - main
 
 env:
-  REPO_NAME: ${{ github.repository_owner }}/reth
-  IMAGE_NAME: ${{ github.repository_owner }}/reth
+  REPO_NAME: ${{ github.repository_owner }}/rpc-check
+  IMAGE_NAME: ${{ github.repository_owner }}/rpc-check
   CARGO_TERM_COLOR: always
-  DOCKER_IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/reth
+  DOCKER_IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/rpc-check
   DOCKER_USERNAME: ${{ github.actor }}
 
 jobs:
