@@ -93,7 +93,9 @@ func updateBlockHeights(localNodeURL string, referenceNodeURLs []string) {
 				}
 			}
 
-			blockHeightData.Mutex.Lock()
+			blockHeightData.Mutex.RLock()
+			log.Printf("LocalHeight: %d, HighestRefHeight: %d, Status: %s",
+				blockHeightData.LocalHeight, blockHeightData.HighestRefHeight, blockHeightData.Status)
 			blockHeightData.LocalHeight = localHeight
 			blockHeightData.HighestRefHeight = highestHeight
 			if localHeight >= highestHeight {
@@ -101,7 +103,6 @@ func updateBlockHeights(localNodeURL string, referenceNodeURLs []string) {
 			} else {
 				blockHeightData.Status = "up weight=50\n" // Adjust to 50% weight if out of sync
 			}
-			blockHeightData.Mutex.Unlock()
 		}
 		time.Sleep(500 * time.Millisecond) // Update every 500 milliseconds
 	}
