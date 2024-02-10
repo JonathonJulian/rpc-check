@@ -133,7 +133,7 @@ func startAgentCheckServer() {
 			blockHeightData.Mutex.RLock()
 			status := blockHeightData.Status
 			blockHeightData.Mutex.RUnlock()
-
+			println(status)
 			c.Write([]byte(status))
 		}(conn)
 	}
