@@ -3,17 +3,15 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io"
 	"log"
+	"net"
 	"net/http"
 	"os"
 	"strconv"
 	"strings"
 	"sync"
 	"time"
-
-	"github.com/firstrow/tcp_server"
 )
 
 type jsonRPCRequest struct {
@@ -121,17 +119,46 @@ func startAgentCheckServer() {
 		listenPort = "9876" // Default port for HAProxy agent checks
 	}
 
-	server := tcp_server.New(":" + listenPort)
-	server.OnNewClient(func(c *tcp_server.Client) {
-		blockHeightData.Mutex.RLock()
-		status := blockHeightData.Status
-		blockHeightData.Mutex.RUnlock()
-		fmt.Printf("Sending status: %s", status)
-		c.Send("weight=66\n") // Using Send method from tcp_server library
-		c.Close()
-	})
+	listener, err := net.Listen("tcp", ":"+listenPort)
+	if err != nil {
+		log.Fatalf("Failed to start agent check server: %v", err)
+	}
+	defer listener.Close()
+	log.Printf("Agent check server listening on :%s\n", listenPort)
 
-	server.Listen()
+	for {
+		conn, err := listener.Accept()
+		if err != nil {
+			log.Printf("Failed to accept connection: %v", err)
+			continue
+		}
+
+		go func(c net.Conn) {
+			defer func() {
+				err := c.Close()
+				if err != nil {
+					log.Printf("Failed to close connection: %v", err)
+				}
+			}()
+
+			blockHeightData.Mutex.RLock()
+			status := blockHeightData.Status
+			blockHeightData.Mutex.RUnlock()
+
+			// Logging the status to be sent for transparency
+			log.Printf("Sending status: %s", status)
+			// For demonstration, hardcoded "weight=66\n" is being sent
+			// Replace this with `status` if you want to send dynamic status based on block height
+			_, err := c.Write([]byte("66%\n"))
+			if err != nil {
+				log.Printf("Failed to send response: %v", err)
+				return
+			}
+
+			// Optionally log that the response was successfully sent
+			log.Println("Response successfully sent, closing connection.")
+		}(conn)
+	}
 }
 
 func main() {
