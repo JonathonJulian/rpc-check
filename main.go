@@ -97,16 +97,16 @@ func updateBlockHeights(localNodeURL string, referenceNodeURLs []string) {
 			blockHeightData.LocalHeight = localHeight
 			blockHeightData.HighestRefHeight = highestHeight
 			if localHeight >= highestHeight {
-				blockHeightData.Status = "up weight=100\n"
+				blockHeightData.Status = "up 100%\n"
 			} else {
-				blockHeightData.Status = "up weight=50\n"
+				blockHeightData.Status = "up 50%\n"
 			}
 			blockHeightData.Mutex.Unlock()
 
 			if localHeight >= highestHeight {
-				blockHeightData.Status = "up weight=100\n"
+				blockHeightData.Status = "up 100%\n"
 			} else {
-				blockHeightData.Status = "up weight=50\n" // Adjust to 50% weight if out of sync
+				blockHeightData.Status = "up 50%\n" // Adjust to 50% weight if out of sync
 			}
 		}
 		time.Sleep(500 * time.Millisecond) // Update every 500 milliseconds
@@ -144,12 +144,9 @@ func startAgentCheckServer() {
 			blockHeightData.Mutex.RLock()
 			status := blockHeightData.Status
 			blockHeightData.Mutex.RUnlock()
-
 			// Logging the status to be sent for transparency
 			log.Printf("Sending status: %s", status)
-			// For demonstration, hardcoded "weight=66\n" is being sent
-			// Replace this with `status` if you want to send dynamic status based on block height
-			_, err := c.Write([]byte("up 67%\n"))
+			_, err := c.Write([]byte(status))
 			if err != nil {
 				log.Printf("Failed to send response: %v", err)
 				return
