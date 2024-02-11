@@ -78,7 +78,7 @@ func updateBlockHeights(localNodeURL string, referenceNodeURLs []string) {
 		if err != nil {
 			log.Printf("Error fetching local node block height: %v. Marking as down.", err)
 			blockHeightData.Mutex.Lock()
-			blockHeightData.Status = "down\n"
+			blockHeightData.Status = "main\n"
 			blockHeightData.Mutex.Unlock()
 		} else {
 			highestHeight := int64(0)
@@ -99,14 +99,14 @@ func updateBlockHeights(localNodeURL string, referenceNodeURLs []string) {
 			if localHeight >= highestHeight {
 				blockHeightData.Status = "up 100%\n"
 			} else {
-				blockHeightData.Status = "up 50%\n"
+				blockHeightData.Status = "up 0%\n"
 			}
 			blockHeightData.Mutex.Unlock()
 
 			if localHeight >= highestHeight {
 				blockHeightData.Status = "up 100%\n"
 			} else {
-				blockHeightData.Status = "up 50%\n" // Adjust to 50% weight if out of sync
+				blockHeightData.Status = "up 0%\n" // Adjust to 0% weight if out of sync
 			}
 		}
 		time.Sleep(500 * time.Millisecond) // Update every 500 milliseconds
