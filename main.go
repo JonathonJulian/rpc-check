@@ -93,11 +93,16 @@ func updateBlockHeights(localNodeURL string, referenceNodeURLs []string) {
 				}
 			}
 
-			blockHeightData.Mutex.RLock()
-			log.Printf("LocalHeight: %d, HighestRefHeight: %d, Status: %s",
-				blockHeightData.LocalHeight, blockHeightData.HighestRefHeight, blockHeightData.Status)
+			blockHeightData.Mutex.Lock()
 			blockHeightData.LocalHeight = localHeight
 			blockHeightData.HighestRefHeight = highestHeight
+			if localHeight >= highestHeight {
+				blockHeightData.Status = "up weight=100\n"
+			} else {
+				blockHeightData.Status = "up weight=50\n"
+			}
+			blockHeightData.Mutex.Unlock()
+
 			if localHeight >= highestHeight {
 				blockHeightData.Status = "up weight=100\n"
 			} else {
@@ -134,7 +139,7 @@ func startAgentCheckServer() {
 			status := blockHeightData.Status
 			blockHeightData.Mutex.RUnlock()
 			println(status)
-			c.Write([]byte(status))
+			c.Write([]byte("weight=66\n"))
 		}(conn)
 	}
 }
