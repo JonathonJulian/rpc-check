@@ -7,6 +7,15 @@ RUN apk add --no-cache git
 # Set the working directory inside the container
 WORKDIR /app
 
+# Initialize a new module (only if you don't have a go.mod file)
+# RUN go mod init your/module/name
+
+# Copy the go.mod and go.sum file (if present) to fetch dependencies
+COPY go.mod go.sum ./
+
+# Download all dependencies. Dependencies will be cached if the go.mod and go.sum files are not changed
+RUN go mod download
+
 # Copy the source from the current directory to the working directory inside the container
 COPY . .
 
