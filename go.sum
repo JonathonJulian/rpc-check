@@ -1,0 +1,4 @@
+github.com/firstrow/tcp_server v0.1.0 h1:SeaKjoPUqSgwb8NLbXtcWEQS1H+QZ2hwPBBLd1TnGo4=
+github.com/firstrow/tcp_server v0.1.0/go.mod h1:Yw3e670k1AHRzhd+WrOEvXLCMh5NDH01Kc/o0QR1GVQ=
+github.com/mackerelio/go-osstat v0.2.4 h1:qxGbdPkFo65PXOb/F/nhDKpF2nGmGaCFDLXoZjJTtUs=
+github.com/mackerelio/go-osstat v0.2.4/go.mod h1:Zy+qzGdZs3A9cuIqmgbJvwbmLQH9dJvtio5ZjJTbdlQ=

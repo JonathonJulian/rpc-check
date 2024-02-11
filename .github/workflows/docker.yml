@@ -6,6 +6,7 @@ on:
   push:
     branches:
       - main
+      - debug
 
 env:
   REPO_NAME: ${{ github.repository_owner }}/rpc-check
@@ -31,5 +32,5 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -t ${{ env.DOCKER_IMAGE_NAME_LOWER }}:agent .
-          docker push ${{ env.DOCKER_IMAGE_NAME_LOWER }}:agent
+          docker build -t ${{ env.DOCKER_IMAGE_NAME_LOWER }}:debug .
+          docker push ${{ env.DOCKER_IMAGE_NAME_LOWER }}:debug
