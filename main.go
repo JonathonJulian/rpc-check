@@ -134,12 +134,29 @@ func startAgentCheckServer() {
 		}
 
 		go func(c net.Conn) {
-			defer c.Close()
+			defer func() {
+				err := c.Close()
+				if err != nil {
+					log.Printf("Failed to close connection: %v", err)
+				}
+			}()
+
 			blockHeightData.Mutex.RLock()
 			status := blockHeightData.Status
 			blockHeightData.Mutex.RUnlock()
-			println(status)
-			c.Write([]byte("weight=66\n"))
+
+			// Logging the status to be sent for transparency
+			log.Printf("Sending status: %s", status)
+			// For demonstration, hardcoded "weight=66\n" is being sent
+			// Replace this with `status` if you want to send dynamic status based on block height
+			_, err := c.Write([]byte("weight=66\n"))
+			if err != nil {
+				log.Printf("Failed to send response: %v", err)
+				return
+			}
+
+			// Optionally log that the response was successfully sent
+			log.Println("Response successfully sent, closing connection.")
 		}(conn)
 	}
 }
