@@ -127,7 +127,7 @@ func startAgentCheckServer() {
 		status := blockHeightData.Status
 		blockHeightData.Mutex.RUnlock()
 		fmt.Printf("Sending status: %s", status)
-		c.Send("weight=66") // Using Send method from tcp_server library
+		c.Send("weight=66\n") // Using Send method from tcp_server library
 		c.Close()
 	})
 
