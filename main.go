@@ -149,7 +149,7 @@ func startAgentCheckServer() {
 			log.Printf("Sending status: %s", status)
 			// For demonstration, hardcoded "weight=66\n" is being sent
 			// Replace this with `status` if you want to send dynamic status based on block height
-			_, err := c.Write([]byte("66%\n"))
+			_, err := c.Write([]byte("up 66%\n"))
 			if err != nil {
 				log.Printf("Failed to send response: %v", err)
 				return
